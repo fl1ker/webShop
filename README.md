@@ -21,5 +21,6 @@ This is an online shop application developed using **Spring Boot** and **MySQL**
     spring.jpa.show-sql=true
 5. Go to phpMyAdmin through the WebStart Page in MAMP and create a new database named onlineshop
    (or any other name you used in application.properties).
-6. Open the OnlineShopApplication.java file in your project and run.
-7. Once the application is successfully started, open your browser and go to the following address: http://localhost:8080
+### 2. Running:
+1. Open the OnlineShopApplication.java file in your project and run.
+2. Once the application is successfully started, open your browser and go to the following address: http://localhost:8080
