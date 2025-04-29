@@ -2,10 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>webShop</title>
 </head>
 <body>
-    <h1>hello, its my OnlimeShop</h1><hr>
+<h1>webShop | <a href="/login">Log in</a></h1><hr>
+    <form action="/logout" method="post">
+        <input type="hidden" name="_csrf" value="${_csrf.token}">
+        <input type="submit" value="Logout"/>
+    </form>
     <h4>here is all products</h4>
     <form action="/" method="get">
         Finding by product name: <input type="text" name="title"><br>
