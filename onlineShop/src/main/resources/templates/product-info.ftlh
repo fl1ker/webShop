@@ -13,10 +13,6 @@
 <b>Product name:</b>${product.title}<br>
 <b>Product description:</b>${product.description}<br>
 <b>Product price:</b>${product.price} USD<br>
-<b>Product author:</b>${product.author}<br>
-<hr>
-<form action="/product/delete/${product.id}" method="post">
-    <input type="submit" value="delete product"/>
-</form>
+<b>Product author:</b><a href="/user/${product.user.id}">${product.user.name}</a><br>
 </body>
 </html>
