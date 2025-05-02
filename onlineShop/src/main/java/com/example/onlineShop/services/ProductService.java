@@ -3,8 +3,10 @@ package com.example.onlineShop.services;
 import com.example.onlineShop.models.Image;
 import com.example.onlineShop.models.Product;
 import com.example.onlineShop.models.User;
+import com.example.onlineShop.repositories.ImageRepository;
 import com.example.onlineShop.repositories.ProductRepository;
 import com.example.onlineShop.repositories.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,7 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
+    private final ImageRepository imageRepository;
 
     public List<Product> listProducts(String title) {
         if (title != null) return productRepository.findByTitle(title);
@@ -69,8 +72,20 @@ public class ProductService {
         return image;
     }
 
-    public void deleteProduct(Long id){
-        productRepository.deleteById(id);
+    public void deleteProduct(User user, Long id) {
+        log.info("Attempting to delete product with id = {}", id);
+        Product product = productRepository.findById(id).orElse(null);
+        if (product != null) {
+            log.info("Product found: {}", product.getTitle());
+            if (product.getUser().getId().equals(user.getId())) {
+                productRepository.delete(product);
+                log.info("Product with id = {} was deleted", id);
+            } else {
+                log.error("User: {} doesn't own this product with id = {}", user.getEmail(), id);
+            }
+        } else {
+            log.error("Product with id = {} was not found", id);
+        }
     }
 
     public Product getProductById(Long id){
