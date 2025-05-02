@@ -15,7 +15,7 @@ This is an online shop application developed using **Spring Boot** and **MySQL**
 4. Open the **`application.properties`** file in your project and add the following data:
    ```properties
     spring.jpa.hibernate.ddl-auto=update
-    spring.datasource.url=jdbc:mysql://localhost:3306/onlineshop
+    spring.datasource.url=jdbc:mysql://localhost:3306/"your_db_name"
     spring.datasource.username=root
     spring.datasource.password=root
     spring.jpa.show-sql=true
