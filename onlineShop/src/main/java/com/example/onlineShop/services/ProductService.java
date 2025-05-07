@@ -91,4 +91,67 @@ public class ProductService {
     public Product getProductById(Long id){
         return productRepository.findById(id).orElse(null);
     }
+
+    @Transactional
+    public void updateProduct(Long id, String title, String description, int price,
+                              MultipartFile file1, MultipartFile file2, MultipartFile file3,
+                              Principal principal) throws IOException {
+        Product product = productRepository.findById(id).orElse(null);
+        if (product == null) return;
+
+        User currentUser = getUserByPrincipal(principal);
+        if (!product.getUser().getId().equals(currentUser.getId())) {
+            log.warn("User {} tried to edit product {} not belonging to them", currentUser.getEmail(), id);
+            return;
+        }
+
+        product.setTitle(title);
+        product.setDescription(description);
+        product.setPrice(price);
+
+        List<Image> images = product.getImages();
+
+        // ===== ЗАМЕНА file1 =====
+        if (file1.getSize() > 0) {
+            if (images.size() >= 1) {
+                imageRepository.delete(images.get(0)); // удалить из БД
+                images.remove(0); // удалить из списка
+            }
+            Image image1 = toImageEntity(file1);
+            image1.setPreviewImage(true);
+            product.addImageToProduct(image1);
+            product.setPreviewImageId(null); // будет пересчитан позже
+        }
+
+        // ===== ЗАМЕНА file2 =====
+        if (file2.getSize() > 0) {
+            if (images.size() >= 2) {
+                imageRepository.delete(images.get(1));
+                images.remove(1);
+            }
+            Image image2 = toImageEntity(file2);
+            product.addImageToProduct(image2);
+        }
+
+        // ===== ЗАМЕНА file3 =====
+        if (file3.getSize() > 0) {
+            if (images.size() >= 3) {
+                imageRepository.delete(images.get(2));
+                images.remove(2);
+            }
+            Image image3 = toImageEntity(file3);
+            product.addImageToProduct(image3);
+        }
+
+        Product savedProduct = productRepository.save(product);
+
+        // Если не указан previewImageId — назначим
+        if (savedProduct.getPreviewImageId() == null && !savedProduct.getImages().isEmpty()) {
+            savedProduct.setPreviewImageId(savedProduct.getImages().get(0).getId());
+            productRepository.save(savedProduct);
+        }
+
+        log.info("Product with id = {} updated", id);
+    }
+
 }

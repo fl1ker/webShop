@@ -55,13 +55,19 @@
         <#list products as product>
             <a href="/product/${product.id}" class="product-link">
                 <div class="card text-white bg-dark my-3 product">
-                    <div class="card-top">
-                        <form action="/product/delete/${product.id}" method="post">
+                    <div class="card-top d-flex justify-content-between px-3 pt-3">
+                        <!-- Delete button -->
+                        <form action="/product/delete/${product.id}" method="post" class="me-2">
                             <input type="hidden" name="_csrf" value="${_csrf.token}"/>
-                            <button type="submit" class="btn btn-danger m-3">
+                            <button type="submit" class="btn btn-danger">
                                 Delete
                             </button>
                         </form>
+
+                        <!-- Edit button -->
+                        <a href="/product/edit/${product.id}" class="btn btn-warning">
+                            Edit
+                        </a>
                     </div>
                     <img src="/images/${product.previewImageId}"
                          class="card-img-top">

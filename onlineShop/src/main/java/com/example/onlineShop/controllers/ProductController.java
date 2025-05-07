@@ -61,4 +61,28 @@ public class ProductController {
         model.addAttribute("products", user.getProducts());
         return "my-products";
     }
+
+    @GetMapping("/product/edit/{id}")
+    public String editProduct(@PathVariable Long id, Model model, Principal principal) {
+        Product product = productService.getProductById(id);
+        if (!product.getUser().getEmail().equals(principal.getName())) {
+            return "redirect:/my/products";
+        }
+        model.addAttribute("product", product);
+        model.addAttribute("user", productService.getUserByPrincipal(principal));
+        return "edit-product";
+    }
+
+    @PostMapping("/product/edit/{id}")
+    public String updateProduct(@PathVariable Long id,
+                                @RequestParam("title") String title,
+                                @RequestParam("description") String description,
+                                @RequestParam("price") int price,
+                                @RequestParam("file1") MultipartFile file1,
+                                @RequestParam("file2") MultipartFile file2,
+                                @RequestParam("file3") MultipartFile file3,
+                                Principal principal) throws IOException {
+        productService.updateProduct(id, title, description, price, file1, file2, file3, principal);
+        return "redirect:/my/products";
+    }
 }
