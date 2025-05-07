@@ -26,7 +26,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/", "/product/**", "/images/**", "/registration", "/user/**", "/static/**").permitAll()
+                        .requestMatchers("/", "/product/**", "/images/**", "/registration", "/user/**", "/static/**", "/h2-console/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
@@ -34,12 +34,17 @@ public class SecurityConfig {
                         .defaultSuccessUrl("/", true)
                         .permitAll()
                 )
-                .logout(logout -> logout
-                        .permitAll()
+                .logout(logout -> logout.permitAll())
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers("/h2-console/**")
+                )
+                .headers(headers -> headers
+                        .frameOptions(frame -> frame.disable()) // ← современный способ
                 );
 
         return http.build();
     }
+
 
 
     @Bean
