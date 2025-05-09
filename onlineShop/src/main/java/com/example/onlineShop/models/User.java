@@ -41,6 +41,40 @@ public class User implements UserDetails {
         dateOfCreated = LocalDateTime.now();
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+
     //security
 
     public boolean isAdmin(){

@@ -1,6 +1,7 @@
 package com.example.onlineShop.controllers;
 
 import com.example.onlineShop.models.User;
+import com.example.onlineShop.services.ProductService;
 import com.example.onlineShop.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -12,9 +13,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import java.security.Principal;
 
 @Controller
-@RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping("/login")
     public String login(Principal principal, Model model) {

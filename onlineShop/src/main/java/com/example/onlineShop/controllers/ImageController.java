@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.ByteArrayInputStream;
 
 @RestController
-@RequiredArgsConstructor
 public class ImageController {
     private final ImageRepository imageRepository;
+    public ImageController(ImageRepository imageRepository) {
+        this.imageRepository = imageRepository;
+    }
 
     @GetMapping("/images/{id}")
     private ResponseEntity<?> getImageById(@PathVariable Long id){

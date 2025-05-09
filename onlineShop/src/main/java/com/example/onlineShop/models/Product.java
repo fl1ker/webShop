@@ -43,4 +43,48 @@ public class Product {
         image.setProduct(this);
         images.add(image);
     }
+    public List<Image> getImages() {
+        return images;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public Long getPreviewImageId() {
+        return previewImageId;
+    }
+
+    public void setPreviewImageId(Long previewImageId) {
+        this.previewImageId = previewImageId;
+    }
+
 }

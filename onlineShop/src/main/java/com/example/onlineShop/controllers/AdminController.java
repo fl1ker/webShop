@@ -16,10 +16,13 @@ import java.security.Principal;
 import java.util.Map;
 
 @Controller
-@RequiredArgsConstructor
 @PreAuthorize("hasAuthority('ROLE_ADMIN')")
 public class AdminController {
     private final UserService userService;
+
+    public AdminController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping("/admin")
     public String admin(Model model, Principal principal){
