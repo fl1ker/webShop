@@ -4,7 +4,7 @@
 This is an online shop application developed using **Spring Boot** with **Docker**.
 
 ## How to Run the Application
-To build and run the application in a Docker container:
+🛠 To build and run the application in a Docker container:
 ```bash
 docker-compose up --build
 ```
