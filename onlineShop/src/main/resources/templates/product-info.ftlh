@@ -39,6 +39,21 @@
     <hr>
     <p><h1 style="text-align: center">${product.title} | ${product.price} $</h1></p>
     <p style="text-align: center">${product.description}</p>
+    <hr>
+
+    <!-- Форма для добавления в корзину -->
+    <#if user?? && user.id??>
+        <div style="text-align: center; margin-top: 20px;">
+            <form action="/cart/add/${product.id}" method="post">
+                <input type="hidden" name="_csrf" value="${_csrf.token}" />
+                <label for="quantity">Количество:</label>
+                <input type="number" id="quantity" name="quantity" value="1" min="1" required style="width: 60px;"/>
+                <button type="submit" class="btn btn-primary">Добавить в корзину</button>
+            </form>
+        </div>
+    <#else>
+        <p style="text-align: center; color: red;">Войдите, чтобы добавить товар в корзину.</p>
+    </#if>
 
     <hr>
     <p style="text-align: center">

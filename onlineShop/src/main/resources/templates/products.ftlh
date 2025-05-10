@@ -9,6 +9,7 @@
                        id="searchWord">
             </div>
             <button style="width: 100%" type="submit" class="btn btn-dark">Find</button>
+            <a class="nav-link" href="/cart">Корзина</a>
         </div>
     </form>
     <hr>
