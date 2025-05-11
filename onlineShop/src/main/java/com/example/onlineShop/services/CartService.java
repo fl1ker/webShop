@@ -1,6 +1,7 @@
 package com.example.onlineShop.services;
 
 import com.example.onlineShop.models.Cart;
+import com.example.onlineShop.models.Order;
 import com.example.onlineShop.models.CartItem;
 import com.example.onlineShop.models.Product;
 import com.example.onlineShop.models.User;
@@ -8,12 +9,14 @@ import com.example.onlineShop.repositories.CartItemRepository;
 import com.example.onlineShop.repositories.CartRepository;
 import com.example.onlineShop.repositories.ProductRepository;
 import com.example.onlineShop.repositories.UserRepository;
+import com.example.onlineShop.services.EmailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
 
 @Service
 public class CartService {
@@ -21,14 +24,16 @@ public class CartService {
     private final CartItemRepository cartItemRepository;
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
+    private final EmailService emailService;
     private static final Logger log = LoggerFactory.getLogger(CartService.class);
 
     public CartService(CartRepository cartRepository, CartItemRepository cartItemRepository,
-                       ProductRepository productRepository, UserRepository userRepository) {
+                       ProductRepository productRepository, UserRepository userRepository, EmailService emailService) {
         this.cartRepository = cartRepository;
         this.cartItemRepository = cartItemRepository;
         this.productRepository = productRepository;
         this.userRepository = userRepository;
+        this.emailService = emailService;
     }
 
     @Transactional
@@ -112,5 +117,34 @@ public class CartService {
         return cart.getItems().stream()
                 .mapToInt(item -> item.getProduct().getPrice() * item.getQuantity())
                 .sum();
+    }
+
+    @Transactional
+    public void checkoutCart(Principal principal) {
+        User user = userRepository.findByEmail(principal.getName());
+        Cart cart = cartRepository.findByUserId(user.getId());
+        if (cart == null || cart.getItems().isEmpty()) {
+            return;
+        }
+
+        for (CartItem item : cart.getItems()) {
+            Order order = new Order();
+            order.setUser(user);
+            order.setProduct(item.getProduct());
+            order.setQuantity(item.getQuantity());
+            order.setPurchaseDate(LocalDateTime.now());
+            user.getOrders().add(order); // чтобы сохранить с каскадом, если так настроено
+
+            // Отправка письма
+            emailService.sendPurchaseConfirmation(
+                    user.getEmail(),
+                    item.getProduct().getTitle(),
+                    item.getQuantity()
+            );
+        }
+
+        cart.getItems().clear(); // очищаем корзину
+        cartRepository.save(cart);
+        userRepository.save(user); // сохраняем заказы пользователя
     }
 }
