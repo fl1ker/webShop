@@ -34,6 +34,10 @@
         <#else>
             <p style="text-align: center">Ваша корзина пуста.</p>
         </#if>
+        <form method="post" action="/cart/checkout">
+            <input type="hidden" name="_csrf" value="${_csrf.token}">
+            <button type="submit">Оформить заказ</button>
+        </form>
         <div style="text-align: center; margin-top: 20px;">
             <a href="/" class="btn btn-secondary">Продолжить покупки</a>
         </div>

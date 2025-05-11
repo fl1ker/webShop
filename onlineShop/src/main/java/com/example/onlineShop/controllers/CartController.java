@@ -53,4 +53,12 @@ public class CartController {
         cartService.removeFromCart(principal, cartItemId);
         return "redirect:/cart";
     }
+    @PostMapping("/cart/checkout")
+    public String checkout(Principal principal) {
+        if (principal == null) {
+            return "redirect:/login";
+        }
+        cartService.checkoutCart(principal);
+        return "redirect:/profile";
+    }
 }

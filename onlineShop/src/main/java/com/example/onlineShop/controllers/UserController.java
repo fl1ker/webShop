@@ -32,6 +32,7 @@ public class UserController {
                           Model model) {
         User user = userService.getUserByPrincipal(principal);
         model.addAttribute("user", user);
+        model.addAttribute("orders", user.getOrders());
         return "profile";
     }
 

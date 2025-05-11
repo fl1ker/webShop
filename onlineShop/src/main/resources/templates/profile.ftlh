@@ -1,6 +1,7 @@
 <#import "blocks/template.ftlh" as t>
 <@t.template user>
     <h1 style="text-align: center">My account</h1>
+
     <hr>
     <br>
     <div style="text-align: center">
@@ -28,5 +29,32 @@
                 Logout
             </button>
         </form>
+    </div>
+
+    <hr>
+    <h2 style="text-align: center">История покупок</h2>
+    <div style="margin: 20px auto; width: 90%">
+        <#if orders?? && orders?size gt 0>
+            <table class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>Продукт</th>
+                    <th>Количество</th>
+                    <th>Дата покупки</th>
+                </tr>
+                </thead>
+                <tbody>
+                <#list orders as order>
+                    <tr>
+                        <td>${order.product.title}</td>
+                        <td>${order.quantity}</td>
+                        <td>${order.formattedDate}</td>
+                    </tr>
+                </#list>
+                </tbody>
+            </table>
+        <#else>
+            <p style="text-align: center">У вас пока нет покупок.</p>
+        </#if>
     </div>
 </@t.template>
