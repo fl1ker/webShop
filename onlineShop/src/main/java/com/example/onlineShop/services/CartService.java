@@ -135,6 +135,7 @@ public class CartService {
             order.setPurchaseDate(LocalDateTime.now());
             user.getOrders().add(order); // чтобы сохранить с каскадом, если так настроено
 
+
             // Отправка письма
             emailService.sendPurchaseConfirmation(
                     user.getEmail(),

@@ -24,6 +24,10 @@ public class Product {
     @Column(name = "price")
     private int price;
 
+    @Column(name = "active")
+    private boolean active = true;
+
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
             mappedBy = "product")
     private List<Image> images = new ArrayList<>();
@@ -40,7 +44,7 @@ public class Product {
     }
 
     public Product(Long id, String title, String description, int price, List<Image> images,
-                   Long previewImageId, User user, LocalDateTime dateOfCreated) {
+                   Long previewImageId, User user, LocalDateTime dateOfCreated,boolean active) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -49,6 +53,7 @@ public class Product {
         this.previewImageId = previewImageId;
         this.user = user;
         this.dateOfCreated = dateOfCreated;
+        this.active = active;
     }
 
     @PrePersist
@@ -153,5 +158,13 @@ public class Product {
                 ", previewImageId=" + previewImageId +
                 ", dateOfCreated=" + dateOfCreated +
                 '}';
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

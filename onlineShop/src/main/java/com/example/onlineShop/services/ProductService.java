@@ -35,9 +35,12 @@ public class ProductService {
         this.imageRepository = imageRepository;
     }
     public List<Product> listProducts(String title) {
-        if (title != null) return productRepository.findByTitle(title);
-        return productRepository.findAll();
+        if (title != null && !title.isEmpty()) {
+            return productRepository.findByTitleContainingAndActiveTrue(title);
+        }
+        return productRepository.findByActiveTrue();
     }
+
 
     public void saveProduct(Principal principal, Product product, MultipartFile file1, MultipartFile file2, MultipartFile file3) throws IOException {
         product.setUser(getUserByPrincipal(principal));
@@ -85,7 +88,9 @@ public class ProductService {
         if (product != null) {
             log.info("Product found: {}", product.getTitle());
             if (product.getUser().getId().equals(user.getId())) {
-                productRepository.delete(product);
+                product.setActive(false);
+                productRepository.save(product);
+
                 log.info("Product with id = {} was deleted", id);
             } else {
                 log.error("User: {} doesn't own this product with id = {}", user.getEmail(), id);
