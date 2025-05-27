@@ -32,15 +32,15 @@
     </div>
 
     <hr>
-    <h2 style="text-align: center">История покупок</h2>
+    <h2 style="text-align: center">Purchase history</h2>
     <div style="margin: 20px auto; width: 90%">
         <#if orders?? && orders?size gt 0>
             <table class="table table-bordered table-hover">
                 <thead>
                 <tr>
-                    <th>Продукт</th>
-                    <th>Количество</th>
-                    <th>Дата покупки</th>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Date</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -54,7 +54,7 @@
                 </tbody>
             </table>
         <#else>
-            <p style="text-align: center">У вас пока нет покупок.</p>
+            <p style="text-align: center">You have no purchase.</p>
         </#if>
     </div>
 </@t.template>

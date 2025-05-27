@@ -3,4 +3,4 @@ WORKDIR /app
 COPY onlineShop/target/*.jar app.jar
 COPY data ./data
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java","-Duser.timezone=Europe/Warsaw", "-jar", "app.jar"]

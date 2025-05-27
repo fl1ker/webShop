@@ -2,19 +2,15 @@ package com.example.onlineShop.controllers;
 
 import com.example.onlineShop.models.Product;
 import com.example.onlineShop.models.User;
-import com.example.onlineShop.services.CustomUserDetailsService;
 import com.example.onlineShop.services.ProductService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 
 import java.io.IOException;
 import java.security.Principal;
@@ -22,7 +18,6 @@ import java.security.Principal;
 @Controller
 public class ProductController {
     private final ProductService productService;
-    private static final Logger log = LoggerFactory.getLogger(ProductController.class);
 
     public ProductController(ProductService productService) {
         this.productService = productService;
@@ -54,9 +49,7 @@ public class ProductController {
 
     @PostMapping("/product/delete/{id}")
     public String deleteProduct(@PathVariable Long id, Principal principal) {
-        log.info("Received delete request for product with id = {} by user {}", id, principal.getName());
         productService.deleteProduct(productService.getUserByPrincipal(principal), id);
-        log.info("Redirecting after deletion of product with id = {}", id);
         return "redirect:/my/products";
     }
 

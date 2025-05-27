@@ -3,10 +3,8 @@ package com.example.onlineShop.repositories;
 import com.example.onlineShop.models.CartItem;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 
 @Repository
 public class CartItemRepositoryImpl implements CartItemRepository {

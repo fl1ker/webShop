@@ -9,7 +9,6 @@ import com.example.onlineShop.repositories.CartItemRepository;
 import com.example.onlineShop.repositories.CartRepository;
 import com.example.onlineShop.repositories.ProductRepository;
 import com.example.onlineShop.repositories.UserRepository;
-import com.example.onlineShop.services.EmailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -44,6 +43,7 @@ public class CartService {
             return;
         }
 
+
         Cart cart = cartRepository.findByUserId(user.getId());
         if (cart == null) {
             cart = new Cart();
@@ -54,6 +54,10 @@ public class CartService {
         Product product = productRepository.findById(productId).orElse(null);
         if (product == null) {
             log.error("Product not found with id: {}", productId);
+            return;
+        }
+        if (!product.isActive()) {
+            log.error("Cannot add inactive product to cart: {}", productId);
             return;
         }
 
@@ -91,7 +95,7 @@ public class CartService {
             return;
         }
 
-        CartItem item = cartItemRepository.findById(cartItemId).orElse(null);
+        CartItem item = cartItemRepository.findById(cartItemId);
         if (item != null && item.getCart().getId().equals(cart.getId())) {
             cart.removeItem(item);
             cartItemRepository.delete(item);
@@ -137,11 +141,15 @@ public class CartService {
 
 
             // Отправка письма
-            emailService.sendPurchaseConfirmation(
-                    user.getEmail(),
-                    item.getProduct().getTitle(),
-                    item.getQuantity()
-            );
+            try {
+                emailService.sendPurchaseConfirmation(
+                        user.getEmail(),
+                        item.getProduct().getTitle(),
+                        item.getQuantity()
+                );
+            } catch (RuntimeException e) {
+                log.error("Błąd podczas wysyłania emaila potwierdzającego: {}", e.getMessage());
+            }
         }
 
         cart.getItems().clear(); // очищаем корзину

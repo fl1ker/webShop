@@ -3,9 +3,7 @@ package com.example.onlineShop.services;
 import com.example.onlineShop.models.User;
 import com.example.onlineShop.models.enums.Role;
 import com.example.onlineShop.repositories.UserRepository;
-import jdk.jfr.consumer.RecordedThread;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -30,12 +28,13 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    @Transactional
     public boolean createUser(User user){
         String email = user.getEmail();
         if (userRepository.findByEmail(email) != null) return false;
         user.setActive(true);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.getRoles().add(Role.ROLE_ADMIN);
+        user.getRoles().add(Role.ROLE_USER);
         log.info("Saving new User with email: {}", email);
         userRepository.save(user);
 
@@ -46,20 +45,22 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    @Transactional
     public void banUser(Long id) {
-        User user =userRepository.findById(id).orElse(null);
+        User user =userRepository.findById(id);
         if(user != null){
             if(user.isActive()){
                 user.setActive(false);
-                log.info("Unban user with id = {}; email: {}", user.getId(), user.getEmail());
+                log.info("Ban user with id = {}; email: {}", user.getId(), user.getEmail());
             } else{
                 user.setActive(true);
-                log.info("Ban user with id = {}; email: {}", user.getId(), user.getEmail());
+                log.info("UnBan user with id = {}; email: {}", user.getId(), user.getEmail());
             }
         }
         userRepository.save(user);
     }
 
+    @Transactional
     public void changeUserRoles(User user, Map<String, String> form) {
         Set<String> roles = Arrays.stream(Role.values())
                 .map(Role::name)
@@ -77,5 +78,7 @@ public class UserService {
         if (principal == null) return new User();
         return userRepository.findByEmail(principal.getName());
     }
-
+    public User getUserById(Long id) {
+        return userRepository.findById(id);
+    }
 }

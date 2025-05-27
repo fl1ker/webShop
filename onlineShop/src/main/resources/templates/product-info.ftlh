@@ -48,11 +48,11 @@
                 <input type="hidden" name="_csrf" value="${_csrf.token}" />
                 <label for="quantity">Количество:</label>
                 <input type="number" id="quantity" name="quantity" value="1" min="1" required style="width: 60px;"/>
-                <button type="submit" class="btn btn-primary">Добавить в корзину</button>
+                <button type="submit" class="btn btn-primary">Add to cart</button>
             </form>
         </div>
     <#else>
-        <p style="text-align: center; color: red;">Войдите, чтобы добавить товар в корзину.</p>
+        <p style="text-align: center; color: red;">Login to add put in cart.</p>
     </#if>
 
     <hr>

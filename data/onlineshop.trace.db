@@ -1,0 +1,16 @@
+2025-05-26 20:06:01.156092+02:00 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Błąd składniowy w wyrażeniu SQL "[*]SPRODUCTS ELECT * FROM USERS"; oczekiwano "SAVEPOINT, SCRIPT, SHUTDOWN"
+Syntax error in SQL statement "[*]SPRODUCTS ELECT * FROM USERS"; expected "SAVEPOINT, SCRIPT, SHUTDOWN"; SQL statement:
+SPRODUCTS ELECT * FROM USERS [42001-232]
+2025-05-26 22:08:50.087001+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUCTS" not found (this database is empty); SQL statement:
+select p1_0.id,p1_0.active,p1_0.date_of_created,p1_0.description,p1_0.preview_image_id,p1_0.price,p1_0.title,p1_0.user_id from products p1_0 where p1_0.active=true [42104-232]
+2025-05-26 22:09:17.825501+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "USERS" not found (this database is empty); SQL statement:
+select u1_0.id,u1_0.active,u1_0.image_id,u1_0.date_of_created,u1_0.email,u1_0.name,u1_0.password from users u1_0 where u1_0.email=? [42104-232]
+2025-05-26 22:09:23.119613+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "USERS" not found (this database is empty); SQL statement:
+select u1_0.id,u1_0.active,u1_0.image_id,u1_0.date_of_created,u1_0.email,u1_0.name,u1_0.password from users u1_0 where u1_0.email=? [42104-232]
+2025-05-26 22:09:31.447084+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "USERS" not found (this database is empty); SQL statement:
+select u1_0.id,u1_0.active,u1_0.image_id,u1_0.date_of_created,u1_0.email,u1_0.name,u1_0.password from users u1_0 where u1_0.email=? [42104-232]

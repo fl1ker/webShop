@@ -1,9 +1,7 @@
 package com.example.onlineShop.controllers;
 
 import com.example.onlineShop.models.User;
-import com.example.onlineShop.services.ProductService;
 import com.example.onlineShop.services.UserService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,8 +49,12 @@ public class UserController {
         return "redirect:/login";
     }
 
-    @GetMapping("/user/{user}")
-    public String userInfo(@PathVariable("user") User user, Model model, Principal principal) {
+    @GetMapping("/user/{id}")
+    public String userInfo(@PathVariable("id") Long id, Model model, Principal principal) {
+        User user = userService.getUserById(id); // Предполагается, что добавим метод getUserById
+        if (user == null) {
+            return "redirect:/"; // Если пользователь не найден, перенаправляем
+        }
         model.addAttribute("user", user);
         model.addAttribute("userByPrincipal", userService.getUserByPrincipal(principal));
         model.addAttribute("products", user.getProducts());

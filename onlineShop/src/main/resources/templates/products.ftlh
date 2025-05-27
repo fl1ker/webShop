@@ -1,15 +1,27 @@
 <#import "blocks/template.ftlh" as t>
 <@t.template user>
     <h1 style="text-align: center">Search product</h1><hr>
-    <form method="get" action="/">
-        <div class="form-row">
-            <div class="form-group col-md-10">
-                <label for="searchWord">Search products</label>
-                <input type="text" name="searchWord" <#if searchWord??>value="${searchWord}"</#if> class="form-control"
-                       id="searchWord">
+    <#if user.email??>
+        <div class="text-right mb-3">
+            <a href="/cart" class="btn btn-dark">
+                <i class="fas fa-shopping-cart"></i> Cart
+            </a>
+        </div>
+    </#if>
+    <form method="get" action="/" class="search-form">
+        <div class="form-row align-items-center">
+            <div class="col-md-10">
+                <div class="input-group">
+                    <input type="text" name="searchWord" class="form-control form-control-lg"
+                           placeholder="Search for products..."
+                           <#if searchWord??>value="${searchWord}"</#if>>
+                </div>
             </div>
-            <button style="width: 100%" type="submit" class="btn btn-dark">Find</button>
-            <a class="nav-link" href="/cart">Корзина</a>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-dark btn-lg btn-block">
+                    <i class="fas fa-search"></i> Search
+                </button>
+            </div>
         </div>
     </form>
     <hr>

@@ -6,15 +6,12 @@ import com.example.onlineShop.models.User;
 import com.example.onlineShop.repositories.ImageRepository;
 import com.example.onlineShop.repositories.ProductRepository;
 import com.example.onlineShop.repositories.UserRepository;
-import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,10 +27,12 @@ public class ProductService {
     public ProductService(ProductRepository productRepository,
                           UserRepository userRepository,
                           ImageRepository imageRepository) {
+        log.info("ProductService initialized");
         this.productRepository = productRepository;
         this.userRepository = userRepository;
         this.imageRepository = imageRepository;
     }
+
     public List<Product> listProducts(String title) {
         if (title != null && !title.isEmpty()) {
             return productRepository.findByTitleContainingAndActiveTrue(title);
@@ -41,7 +40,7 @@ public class ProductService {
         return productRepository.findByActiveTrue();
     }
 
-
+    @Transactional
     public void saveProduct(Principal principal, Product product, MultipartFile file1, MultipartFile file2, MultipartFile file3) throws IOException {
         product.setUser(getUserByPrincipal(principal));
         Image image1;
@@ -82,6 +81,7 @@ public class ProductService {
         return image;
     }
 
+    @Transactional
     public void deleteProduct(User user, Long id) {
         log.info("Attempting to delete product with id = {}", id);
         Product product = productRepository.findById(id).orElse(null);
@@ -126,13 +126,13 @@ public class ProductService {
         // ===== ЗАМЕНА file1 =====
         if (file1.getSize() > 0) {
             if (images.size() >= 1) {
-                imageRepository.delete(images.get(0)); // удалить из БД
-                images.remove(0); // удалить из списка
+                imageRepository.delete(images.get(0));
+                images.remove(0);
             }
             Image image1 = toImageEntity(file1);
             image1.setPreviewImage(true);
             product.addImageToProduct(image1);
-            product.setPreviewImageId(null); // будет пересчитан позже
+            product.setPreviewImageId(null);
         }
 
         // ===== ЗАМЕНА file2 =====

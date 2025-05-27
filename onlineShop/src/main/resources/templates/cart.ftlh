@@ -1,16 +1,16 @@
 <#import "blocks/template.ftlh" as t>
 <@t.template user>
-    <h1 style="text-align: center">Ваша корзина</h1>
+    <h1 style="text-align: center">shopping cart</h1>
     <div class="container">
         <#if cart?? && cart.items?size gt 0>
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th>Товар</th>
-                    <th>Цена</th>
-                    <th>Количество</th>
-                    <th>Итого</th>
-                    <th>Действия</th>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Summary</th>
+                    <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -23,23 +23,27 @@
                         <td>
                             <form action="/cart/remove/${item.id}" method="post">
                                 <input type="hidden" name="_csrf" value="${_csrf.token}" />
-                                <button type="submit" class="btn btn-danger btn-sm">Удалить</button>
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                             </form>
                         </td>
                     </tr>
                 </#list>
                 </tbody>
             </table>
-            <h3 style="text-align: right">Общая стоимость: ${totalPrice} $</h3>
+            <h3 style="text-align: right">Total price: ${totalPrice} $</h3>
         <#else>
-            <p style="text-align: center">Ваша корзина пуста.</p>
+            <p style="text-align: center">Your shopping cart is empty</p>
         </#if>
-        <form method="post" action="/cart/checkout">
-            <input type="hidden" name="_csrf" value="${_csrf.token}">
-            <button type="submit">Оформить заказ</button>
-        </form>
-        <div style="text-align: center; margin-top: 20px;">
-            <a href="/" class="btn btn-secondary">Продолжить покупки</a>
+        <div class="text-center mt-4">
+            <form method="post" action="/cart/checkout" class="d-inline">
+                <input type="hidden" name="_csrf" value="${_csrf.token}">
+                <button type="submit" class="checkout-btn">
+                    Complete Purchase
+                </button>
+            </form>
+            <a href="/" class="btn btn-outline-secondary ml-3">
+                Continue Shopping
+            </a>
         </div>
     </div>
 </@t.template>

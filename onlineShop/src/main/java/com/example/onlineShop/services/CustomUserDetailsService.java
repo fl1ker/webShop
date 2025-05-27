@@ -2,8 +2,6 @@ package com.example.onlineShop.services;
 
 import com.example.onlineShop.models.User;
 import com.example.onlineShop.repositories.UserRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
